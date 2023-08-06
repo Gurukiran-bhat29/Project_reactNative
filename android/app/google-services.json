@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "606347679496",
+    "project_id": "dempapp-reactnative",
+    "storage_bucket": "dempapp-reactnative.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606347679496:android:b5140d0af98113ce03bebd",
+        "android_client_info": {
+          "package_name": "com.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606347679496-0ihbtirsm3j4vcrp9be2n2dqfgkc6mi7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBkB8pJjQKXQ7yLSaTVF5bORwhd3ROOmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606347679496-0ihbtirsm3j4vcrp9be2n2dqfgkc6mi7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
