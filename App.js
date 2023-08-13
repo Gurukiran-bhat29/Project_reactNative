@@ -7,7 +7,7 @@
  */
 
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,15 +20,49 @@ import {
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import messaging from '@react-native-firebase/messaging';
 import HomeScreen from './src/HomeScreen';
 import Login from './src/Login';
 import store from './src/utils/store';
 
 const Stack = createStackNavigator();
 
-const App = () => {
+const App = ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
+  const [initialRoute, setInitialRoute] = useState('Login');
+
   const routeNameRef = React.useRef();
   const navigationRef = React.useRef();
+
+  useEffect(() => {
+
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      navigation.navigate(remoteMessage.data.type);
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <Provider store={store}>
@@ -50,7 +84,7 @@ const App = () => {
           routeNameRef.current = currentRouteName;
         }}
       >
-        <Stack.Navigator initialRouteName='Login'>
+        <Stack.Navigator initialRouteName={initialRoute}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
