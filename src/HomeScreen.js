@@ -5,12 +5,24 @@ import { useDispatch } from 'react-redux';
 import { addDetails } from './utils/menuSlice';
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
+import messaging from '@react-native-firebase/messaging';
 
 const HomeScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
+  const setTokenForFireBase = async () => {
+    // Register the device with FCM
+    await messaging().registerDeviceForRemoteMessages();
+
+    // Get the token
+    const token = await messaging().getToken();
+    console.log('Token...!', token);
+  }
+
   useEffect(() => {
+    setTokenForFireBase();
+
     return () => dispatch(addDetails('popu'));
   }, [])
 

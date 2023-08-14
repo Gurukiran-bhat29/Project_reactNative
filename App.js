@@ -16,6 +16,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Alert,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,7 +28,19 @@ import store from './src/utils/store';
 
 const Stack = createStackNavigator();
 
-const App = ({ navigation }) => {
+async function onMessageReceived(message) {
+  // Do something
+  console.log('Message handled in the background!', message);
+}
+
+// Handles FCM messages when the application is alive/in the foreground
+messaging().onMessage(onMessageReceived);
+
+// Register background handler
+// Handles FCM messages when the app is in a killed state
+messaging().setBackgroundMessageHandler(onMessageReceived);
+
+const App = () => {
   const [loading, setLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('Login');
 
@@ -35,14 +48,17 @@ const App = ({ navigation }) => {
   const navigationRef = React.useRef();
 
   useEffect(() => {
-
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
         'Notification caused app to open from background state:',
         remoteMessage.notification,
       );
-      navigation.navigate(remoteMessage.data.type);
+      Alert.alert(
+        remoteMessage.data.type,
+        JSON.stringify(remoteMessage.notification.body)
+      );
+      // navigation.navigate(remoteMessage.data.type);
     });
 
     // Check whether an initial notification is available
