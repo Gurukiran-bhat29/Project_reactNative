@@ -19,6 +19,15 @@ const Login = ({ navigation }) => {
         }}>
         <Text style={{ color: 'white' }}>Go to Home page</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Notifee')}
+        style={{
+          backgroundColor: '#4032a8',
+          marginTop: '2%',
+          padding: '2%'
+        }}>
+        <Text style={{ color: 'white' }}>Go to Notifee page</Text>
+      </TouchableOpacity>
     </View>
   );
 }

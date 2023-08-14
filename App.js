@@ -24,6 +24,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import HomeScreen from './src/HomeScreen';
 import Login from './src/Login';
+import Notifee from './src/Notifee';
 import store from './src/utils/store';
 
 const Stack = createStackNavigator();
@@ -103,6 +104,7 @@ const App = () => {
         <Stack.Navigator initialRouteName={initialRoute}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Notifee" component={Notifee} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
