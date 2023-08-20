@@ -22,6 +22,7 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 import HomeScreen from './src/HomeScreen';
 import Login from './src/Login';
 import Notifee from './src/Notifee';
@@ -48,7 +49,22 @@ const App = () => {
   const routeNameRef = React.useRef();
   const navigationRef = React.useRef();
 
+  // Bootstrap sequence function
+  const getNotifeeNotification = async () => {
+    const initialNotification = await notifee.getInitialNotification();
+
+    if (initialNotification) {
+      console.log('Notification caused application to open', initialNotification.notification);
+      console.log('Press action used to open the app', initialNotification.pressAction);
+    }
+  }
+
   useEffect(() => {
+    // Lets to perform required operation if notification is sent only through Notifee 
+    getNotifeeNotification()
+      .then(() => setLoading(false))
+      .catch(console.error);
+
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
