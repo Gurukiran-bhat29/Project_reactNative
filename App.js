@@ -19,7 +19,7 @@ import {
   Alert,
 } from 'react-native';
 import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native';
@@ -46,6 +46,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('Login');
 
+  const navigation = useNavigation();
   const routeNameRef = React.useRef();
   const navigationRef = React.useRef();
 
@@ -75,7 +76,7 @@ const App = () => {
         remoteMessage.data.type,
         JSON.stringify(remoteMessage.notification.body)
       );
-      // navigation.navigate(remoteMessage.data.type);
+      navigation.navigate(remoteMessage.data.type);
     });
 
     // Check whether an initial notification is available
@@ -87,7 +88,7 @@ const App = () => {
             'Notification caused app to open from quit state:',
             remoteMessage.notification,
           );
-          setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+          setInitialRoute(remoteMessage.data.type);
         }
         setLoading(false);
       });
